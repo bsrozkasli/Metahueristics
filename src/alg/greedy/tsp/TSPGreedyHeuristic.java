@@ -16,18 +16,33 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
- * TODO-2 Implement Greedy Heuristic for TSP
+ * Greedy constructive heuristic for the Traveling Salesman Problem (TSP). The
+ * heuristic starts from a random city and repeatedly asks a {@link TSPEvaluator}
+ * to choose the next city until all cities have been visited. The final visit
+ * order is returned as an {@link IntegerPermutation}.
  */
 public class TSPGreedyHeuristic implements GreedyHeuristic<TSPModel, IntegerPermutation> {
 
+    /** Secure random generator used to select the starting city. */
     Random random = new SecureRandom();
+    /** Strategy object that decides which city should be visited next. */
     private TSPEvaluator evaluator;
 
 
+    /**
+     * Creates a heuristic that delegates the next-city selection to the given
+     * {@link TSPEvaluator} implementation.
+     *
+     * @param evaluator strategy used when multiple candidate cities are available
+     */
     public TSPGreedyHeuristic(TSPEvaluator evaluator) {
         this.evaluator = evaluator;
     }
 
+    /**
+     * Constructs a complete TSP tour by iteratively selecting the next city
+     * until all have been visited.
+     */
     @Override
     public IntegerPermutation solve(TSPModel model) {
 
@@ -48,15 +63,30 @@ public class TSPGreedyHeuristic implements GreedyHeuristic<TSPModel, IntegerPerm
             visited.add(next);
             nonVisited.removeIf(x->x==next); // !Am I removing the ith item, the item i ?
         }
-        // todo: implement greeady algorithm
         return new IntegerPermutation(visited);
     }
 
+    /**
+     * Delegates the selection of the next city to the evaluator using the most
+     * recently visited city as the current position.
+     *
+     * @param model        problem instance that provides distances
+     * @param visited      ordered list of already visited city indices
+     * @param nonVisiteds  candidate cities that have not been visited yet
+     * @return index of the next city to visit
+     */
     private int chooseNext(TSPModel model, List<Integer> visited, List<Integer> nonVisiteds) {
         int next = evaluator.choose(model, nonVisiteds,visited.get(visited.size()-1));
         return next;
     }
 
+    /**
+     * Checks whether the tour already contains all cities in the model.
+     *
+     * @param model   problem instance to compare against
+     * @param visited current sequence of visited cities
+     * @return {@code true} when all cities have been visited
+     */
     private boolean complete(TSPModel model, List<Integer> visited) {
 
 
@@ -65,6 +95,12 @@ public class TSPGreedyHeuristic implements GreedyHeuristic<TSPModel, IntegerPerm
 
 
 
+    /**
+     * Creates a random symmetric TSP instance with distances between 10 and 100
+     * units for demonstration purposes.
+     *
+     * @return randomly generated {@link TSPModel}
+     */
     static TSPModel randomInstance()
     {
         int size = 1000;
@@ -99,8 +135,11 @@ public class TSPGreedyHeuristic implements GreedyHeuristic<TSPModel, IntegerPerm
     }
 
     /**
-     * !Demo This demonstrates everyhing you implemented.
-     * @param args
+     * Demo entry point that constructs a random TSP instance and runs the greedy
+     * heuristic multiple times, printing the resulting solutions and their
+     * objective values.
+     *
+     * @param args ignored command-line arguments
      */
     public static void main(String[] args) {
 

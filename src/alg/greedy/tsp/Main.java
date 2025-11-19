@@ -4,7 +4,13 @@ import problem.tsp.TSPModel;
 import representation.IntegerPermutation;
 import java.util.Random;
 
+/**
+ * Small helper class that prints a randomly generated TSP distance matrix.
+ */
 public class Main {
+    /**
+     * Generates a random symmetric matrix and prints it to stdout.
+     */
     public static void main(String[] args) {
         int size = 10;
         double[][] distances = new double[size][size];

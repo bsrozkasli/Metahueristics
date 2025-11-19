@@ -5,10 +5,15 @@ import problem.ObjectiveType;
 import representation.IntegerPermutation;
 
 /**
- * TODO-1: Implement Minimum total path length objective
+ * Objective function that evaluates a TSP tour by summing the distances between
+ * consecutive cities (including the return edge to the first city). Lower
+ * values correspond to better tours.
  */
 public class TSPMinimumDistanceOF implements ObjectiveFunction<IntegerPermutation,TSPModel> {
     @Override
+    /**
+     * @return minimization objective type
+     */
     public ObjectiveType type() {
 
         // todo: return objective type;
@@ -16,6 +21,13 @@ public class TSPMinimumDistanceOF implements ObjectiveFunction<IntegerPermutatio
     }
 
     @Override
+    /**
+     * Computes the total tour length including the closing edge.
+     *
+     * @param tspModel model providing the distance matrix
+     * @param ip       permutation that defines the visit order
+     * @return total path length
+     */
     public double value(TSPModel tspModel, IntegerPermutation ip) {
         double value= 0.0;
         double[][] distances = tspModel.getDistanceMatrix();
@@ -27,6 +39,9 @@ public class TSPMinimumDistanceOF implements ObjectiveFunction<IntegerPermutatio
         return value;
     }
 
+    /**
+     * Quick self-test showcasing the objective calculation on a small instance.
+     */
     public static void main(String[] args) {
         double[][] distances= {  {0,3,2},
                                  {3,0,4},

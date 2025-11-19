@@ -1,6 +1,5 @@
 package problem;
 
-import com.sun.deploy.util.ArrayUtil;
 import representation.Representation;
 
 import java.util.Arrays;
